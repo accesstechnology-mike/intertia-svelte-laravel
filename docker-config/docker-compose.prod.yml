@@ -9,20 +9,16 @@ services:
     container_name: log3
     restart: unless-stopped
     working_dir: /var/www
-    command: bash -c "composer install && php artisan serve --host 0.0.0.0 --port 8000"
+    command: bash -c "composer install && php artisan serve"
     volumes:
       - ${PWD}/:/var/www
       - ${PWD}/docker-config/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - caddy
-    environment:
-      - APP_PORT=8000
-    ports:
-      - "8000:8000"
     labels:
       caddy: ${APP_URL}
       caddy.root: "* $PWD/public"
-      caddy.php_fastcgi: "{{upstreams 8000}}"
+      caddy.php_fastcgi: "{{upstreams 9000}}"
       caddy.php_fastcgi.root: /var/www/public
       caddy.encode: gzip
       caddy.file_server:
