@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 const codespaceName = process.env['CODESPACE_NAME'];
-const hmrPort = 5173;
+const hmrPort = 3001;
 
 const hmrRemoteHost = codespaceName ? `${codespaceName}-${hmrPort}.githubpreview.dev` : 'localhost';
 const hmrRemotePort = codespaceName ? 443 : hmrPort;
@@ -20,7 +20,11 @@ export default defineConfig({
 
     plugins: [
         laravel.default({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css', 
+                'resources/js/app.js'
+            ],
+            
             refresh: true,
         }),
         svelte({}),

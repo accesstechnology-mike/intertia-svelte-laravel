@@ -1,6 +1,6 @@
 <script>
 
-    let user = "User";
+    let user = "asf it's working";
 
 </script>
 
