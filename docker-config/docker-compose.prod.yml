@@ -9,12 +9,16 @@ services:
     container_name: log3
     restart: unless-stopped
     working_dir: /var/www
-    command: bash -c "composer install"
+    command: bash -c "composer install && php artisan serve --host 0.0.0.0 --port 8000"
     volumes:
       - ${PWD}/:/var/www
       - ${PWD}/docker-config/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - caddy
+    environment:
+      - APP_PORT=8000
+    ports:
+      - "8000:8000"
     labels:
       caddy: log3.accesstechnology.co.uk
       caddy.root: "* $PWD/public"
