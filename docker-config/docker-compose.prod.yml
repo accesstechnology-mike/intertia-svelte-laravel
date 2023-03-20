@@ -20,7 +20,7 @@ services:
     ports:
       - "8000:8000"
     labels:
-      caddy: log3.accesstechnology.co.uk
+      caddy: ${APP_URL}
       caddy.root: "* $PWD/public"
       caddy.php_fastcgi: "{{upstreams 9000}}"
       caddy.php_fastcgi.root: /var/www/public
@@ -31,7 +31,7 @@ services:
     image: node:lts
     container_name: laravel_vite
     working_dir: /var/www
-    command: sh -c "npm run prod"
+    command: sh -c "npm run build"
     volumes:
       - ${PWD}/:/var/www
 
