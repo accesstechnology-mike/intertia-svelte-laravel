@@ -22,7 +22,7 @@ services:
     labels:
       caddy: ${APP_URL}
       caddy.root: "* $PWD/public"
-      caddy.php_fastcgi: "{{upstreams 9000}}"
+      caddy.php_fastcgi: "{{upstreams 8000}}"
       caddy.php_fastcgi.root: /var/www/public
       caddy.encode: gzip
       caddy.file_server:
