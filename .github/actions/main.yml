@@ -1,0 +1,32 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+
+    - name: Install dependencies
+      run: |
+        composer install
+        npm install
+
+    - name: Deploy code
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        REMOTE_DIR: /var/www/app
+      run: |
+        chmod 600 ./deploy_key
+        ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$SERVER_IP "cd $REMOTE_DIR && git pull origin main && composer install && npm run prod"

@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
+    command: bash -c "composer install && php artisan serve --host 0.0.0.0 --port 8000"
+    volumes:
+      - ${PWD}/:/var/www
+      - ${PWD}/docker-config/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - APP_PORT=8000
+    ports:
+      - "8000:8000"
+
+  vite:
+    image: node:lts
+    container_name: laravel_vite
+    working_dir: /var/www
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - ${PWD}/:/var/www
+    ports:
+      - "3001:3001"
+      - "24678:24678"
