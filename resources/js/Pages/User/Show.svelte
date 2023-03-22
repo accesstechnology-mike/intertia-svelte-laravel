@@ -2,7 +2,10 @@
 <script>
     export let user
 
+
+
     user.avatar = user.avatar.replace('?sz=50', '?sz=400')
+
 
 
   </script>
@@ -11,5 +14,7 @@
 
 
     <img src={user.avatar} alt={user.name}/>
+
+
 
 
