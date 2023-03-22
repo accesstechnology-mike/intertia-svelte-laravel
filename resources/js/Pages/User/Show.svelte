@@ -1,0 +1,7 @@
+
+<script>
+    export let user
+  </script>
+  
+    <h1>Welcome</h1>
+    <p>Hello {user.name}, welcome to your first Inertia app!</p>
