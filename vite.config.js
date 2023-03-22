@@ -28,5 +28,6 @@ export default defineConfig({
             refresh: true,
         }),
         svelte({}),
+        
     ],
 });

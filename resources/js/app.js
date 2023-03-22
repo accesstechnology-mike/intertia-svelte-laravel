@@ -1,6 +1,6 @@
 import './bootstrap';
+import '../css/app.css';
 
-//from inertia/svelte/laravel guide
 import { createInertiaApp } from '@inertiajs/svelte'
 
 createInertiaApp({
