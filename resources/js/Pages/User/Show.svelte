@@ -1,7 +1,15 @@
 
 <script>
     export let user
+
+    user.avatar = user.avatar.replace('?sz=50', '?sz=400')
+
+
   </script>
   
-    <h1>Welcome</h1>
-    <p>Hello {user.name}, welcome to your first Inertia app!</p>
+    <p>Hello {user.name}</p>
+
+
+    <img src={user.avatar} alt={user.name}/>
+
+
