@@ -28,11 +28,9 @@ export let pageTitle = 'access: log';
 
 	<svelte:fragment slot="header"><Appbar/></svelte:fragment>
 	<svelte:fragment slot="sidebarLeft"><Sidebar/></svelte:fragment> 
-	<svelte:fragment slot="pageHeader"><h1>{pageTitle}</h1></svelte:fragment>
 
-  <div class="layout-docs page-padding flex items-start gap-10 doc-shell relative">
 
-  
+    <div class="page-padding">
     <slot />
 
     

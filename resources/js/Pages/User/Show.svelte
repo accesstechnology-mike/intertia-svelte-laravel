@@ -22,9 +22,9 @@
 
   </script>
 
-    <p>Hello {user.name}</p>
-
+    <h1>{pageName}</h1>
     <Avatar src="{user.avatar}" alt={user.name} width="w-32" />
+    
 
 
 
