@@ -1,8 +1,15 @@
 <script>
+
     import { AppBar } from '@skeletonlabs/skeleton';
     import { LightSwitch } from '@skeletonlabs/skeleton';
 
     import { drawerStore } from '@skeletonlabs/skeleton';
+
+    import Fa from 'svelte-fa'
+    import { faUser } from '@fortawesome/free-regular-svg-icons'
+    import { faXmark } from '@fortawesome/free-solid-svg-icons'
+
+    let src = './android-chrome-192x192.png'
 
     function drawerOpen() {
     drawerStore.open({});
@@ -23,9 +30,23 @@
                     </svg>
                 </span>
             </button>
-            <strong class="text-xl uppercase">access: log</strong>
+            <a href="/">
+                <button class="btn-icon-sm relative top-1 mr-2">
+                    <img {src} alt="" />
+                </button>
+                <strong class="text-xl uppercase relative bottom-1.5 hidden md:inline">access: log</strong>
+            </a>
         </div>
     </svelte:fragment>
-	<svelte:fragment slot="trail"><LightSwitch/></svelte:fragment>
+	<svelte:fragment slot="trail">
+
+        <a class="btn-icon variant-soft" href="/profile">
+            <Fa icon={faUser} />
+        </a>
+        <a class="btn-icon variant-soft" href="/logout">
+            <Fa icon={faXmark} />
+        </a>
+        <LightSwitch/>
+    </svelte:fragment>
 </AppBar>
 

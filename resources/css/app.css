@@ -8,6 +8,8 @@ html { -webkit-tap-highlight-color: rgba(128, 128, 128, 0.5); }
 
 h1, h2, h3, h4, h5, h6 { @apply pb-7 }
 
+p { @apply pb-5 }
+
 .page-padding {
     padding: 1rem
 }

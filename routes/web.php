@@ -20,5 +20,6 @@ Route::middleware('auth')->group(function () {
 
     // dashboard route
     Route::get('/dashboard', [UserController::class, 'show'])->name('dashboard');
+    Route::get('/profile', [UserController::class, 'show'])->name('profile');
 
 });

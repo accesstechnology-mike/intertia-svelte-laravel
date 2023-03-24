@@ -29,7 +29,6 @@ export let pageTitle = 'access: log';
 	<svelte:fragment slot="header"><Appbar/></svelte:fragment>
 	<svelte:fragment slot="sidebarLeft"><Sidebar/></svelte:fragment> 
 
-
     <div class="page-padding">
     <slot />
 
