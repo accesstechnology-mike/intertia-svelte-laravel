@@ -6,12 +6,21 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 
 // home route
-Route::get('/', function () {return Inertia::render('Home');});
+Route::get('/', function () {
+
+    //if auth redirect to dashboard
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    }
+    //else render welcome page
+    return Inertia::render('Welcome');
+})->name('welcome');
 
 // auth routes
-Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/callback', [AuthController::class, 'callback']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
@@ -19,7 +28,6 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth')->group(function () {
 
     // dashboard route
-    Route::get('/dashboard', [UserController::class, 'show'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [UserController::class, 'show'])->name('profile');
-
 });

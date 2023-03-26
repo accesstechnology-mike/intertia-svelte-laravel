@@ -8,13 +8,13 @@ import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 import '@skeletonlabs/skeleton/styles/all.css';
 
 // Finally, your application's global stylesheet (sometimes labeled 'app.css')
-import '../../css/app.css';
+import '../../../css/app.css';
 
 import { AppShell } from '@skeletonlabs/skeleton';
 import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
 
 import Appbar from './Appbar.svelte';
-import Sidebar from '../Components/Sidebar.svelte';
+import Sidebar from './Sidebar.svelte';
 
 export let pageTitle = 'access: log';
 
@@ -24,7 +24,7 @@ export let pageTitle = 'access: log';
 	<Sidebar />
 </Drawer>
 
-<AppShell slotSidebarLeft="bg-surface-500/5 w-0 lg:w-56" slotPageHeader="page-padding">
+<AppShell slotSidebarLeft="bg-surface-500/5 w-0 lg:w-56" slotPageHeader="page-padding"> 
 
 	<svelte:fragment slot="header"><Appbar/></svelte:fragment>
 	<svelte:fragment slot="sidebarLeft"><Sidebar/></svelte:fragment> 
