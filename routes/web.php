@@ -30,4 +30,13 @@ Route::middleware('auth')->group(function () {
     // dashboard route
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [UserController::class, 'show'])->name('profile');
+    //get /permission, return inertia view with permissions
+    Route::get('/manage-permissions', function () {
+        $permissions = \Spatie\Permission\Models\Permission::all();
+        return Inertia::render('ManagePermissions', [
+            'permissions' => $permissions
+        ]);
+    });
+
+    Route::post('/permissions', [PermissionController::class, 'store']);
 });
