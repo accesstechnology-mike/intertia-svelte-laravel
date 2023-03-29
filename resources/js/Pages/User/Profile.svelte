@@ -37,7 +37,7 @@
     import { Avatar } from "@skeletonlabs/skeleton";
     import { ProgressBar } from "@skeletonlabs/skeleton";
 
-    user.avatar = user.avatar.replace("?sz=50", "?sz=400");
+    // user.avatar = user.avatar.replace("?sz=50", "?sz=200");
 
     //this month title
     let thisMonth = new Date().toLocaleString("default", { month: "long" });
@@ -64,7 +64,7 @@
 <div class="flex">
     <div class="flex-auto">
         <h1 class="pb-2">{pageName}</h1>
-        <h3 class="pb-2">{user.role}</h3>
+        <h3 class="pb-2">{user.roles[0].name}</h3>
         <p>🏠 {user.postcode}</p>
     </div>
 
@@ -77,7 +77,7 @@
     <div class="w-full sm:w-1/2">
         <hr class="mb-4" />
         <!-- hide section if role is Technician or Assistant or Admin -->
-        {#if user.role != "Technician" && user.role != "Assistant" && user.role != "Admin"}
+        {#if user.roles[0].name != "AT Technician" && user.roles[0].name != "AT Assistant" && user.roles[0].name != "AT Admin"}
             <h3 class="pb-1">🥰<strong> {clientCount} clients</strong></h3>
 
             //breakdown of weighting / statuses etc.
@@ -91,7 +91,7 @@
         {#if user.role != "Admin"}
             <span class="text-lg"
                 >Client Intervention: <strong>{equivHoursThisQuarter}</strong>
-            </span>hrs 
+            </span>hrs
             <!-- <span class="text-sm"> - <i> {onTarget}:1</i> </span> -->
             {face}
 

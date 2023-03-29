@@ -30,13 +30,12 @@ Route::middleware('auth')->group(function () {
     // dashboard route
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [UserController::class, 'show'])->name('profile');
-    //get /permission, return inertia view with permissions
-    Route::get('/manage-permissions', function () {
-        $permissions = \Spatie\Permission\Models\Permission::all();
-        return Inertia::render('ManagePermissions', [
-            'permissions' => $permissions
-        ]);
-    });
 
-    Route::post('/permissions', [PermissionController::class, 'store']);
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    Route::get('/users/{id}/roles-permissions', [UserController::class, 'editRolesAndPermissions'])->name('users.edit-roles-permissions');
+    Route::post('/users/{user}/assign-role/{role}', [UserController::class, 'assignRole'])->name('users.assign-role');
+    Route::post('/users/{user}/remove-role/{role}', [UserController::class, 'removeRole'])->name('users.remove-role');
+    Route::post('/users/{user}/give-permission/{permission}', [UserController::class, 'givePermission'])->name('users.give-permission');
+    Route::post('/users/{user}/revoke-permission/{permission}', [UserController::class, 'revokePermission'])->name('users.revoke-permission');
 });

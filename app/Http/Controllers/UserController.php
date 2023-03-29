@@ -9,13 +9,51 @@ use Auth;
 use App\Models\Log;
 use Carbon\Carbon;
 use App\Models\Client;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
 
+
+    public function index()
+    {
+        //get authenticated user
+        $user = Auth::user();
+        // if user has permission to show users, show them
+
+
+        if ($user->hasPermissionTo('read users')) {
+            //get all users where active is not 0
+            $users = User::with(['roles', 'permissions'])
+                ->where('active', '!=', 0)
+                ->leftJoin(
+                    'model_has_roles',
+                    'users.id',
+                    '=',
+                    'model_has_roles.model_id'
+                )
+                ->leftJoin(
+                    'roles',
+                    'model_has_roles.role_id',
+                    '=',
+                    'roles.id'
+                )
+                ->select('users.*')
+                ->orderBy('roles.id')
+                ->get();
+
+            return Inertia::render('User/Index', [
+                'users' => $users,
+            ]);
+        } else {
+            //else redirect to dashboard
+            return redirect('/dashboard');
+        }
+    }
     public function show(User $user)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('roles', 'roles.permissions');
 
         //sum log hours for this quarter
         $hoursThisQuarter = Log::where('user_id', $user->id)
@@ -138,6 +176,93 @@ class UserController extends Controller
             'last12Weeks' => $mergedWeeks,
             'rollingAverages' => $rollingAverages,
 
+        ]);
+    }
+    public function editRolesAndPermissions($id)
+    {
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $permissions = Permission::all();
+        $userRoles = $user->roles->pluck('name')->toArray();
+        $userPermissions = $user->permissions->pluck('name')->toArray();
+
+        return Inertia::render('User/RolesPermissions', [
+            'user' => $user,
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'userRoles' => $userRoles,
+            'userPermissions' => $userPermissions
+        ]);
+    }
+    public function assignRole(User $user, Role $role)
+    {
+        $user->assignRole($role);
+
+        // Return updated user data
+        $user->refresh();
+        $userRoles = $user->roles->pluck('name');
+        $userPermissions = $user->permissions->pluck('name');
+
+        return Inertia::render('UserRolesPermissions', [
+            'user' => $user,
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+            'userRoles' => $userRoles,
+            'userPermissions' => $userPermissions
+        ]);
+    }
+
+    public function removeRole(User $user, Role $role)
+    {
+        $user->removeRole($role);
+
+        // Return updated user data
+        $user->refresh();
+        $userRoles = $user->roles->pluck('name');
+        $userPermissions = $user->permissions->pluck('name');
+
+        return Inertia::render('UserRolesPermissions', [
+            'user' => $user,
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+            'userRoles' => $userRoles,
+            'userPermissions' => $userPermissions
+        ]);
+    }
+
+    public function givePermission(User $user, Permission $permission)
+    {
+        $user->givePermissionTo($permission);
+
+        // Return updated user data
+        $user->refresh();
+        $userRoles = $user->roles->pluck('name');
+        $userPermissions = $user->permissions->pluck('name');
+
+        return Inertia::render('UserRolesPermissions', [
+            'user' => $user,
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+            'userRoles' => $userRoles,
+            'userPermissions' => $userPermissions
+        ]);
+    }
+
+    public function revokePermission(User $user, Permission $permission)
+    {
+        $user->revokePermissionTo($permission);
+
+        // Return updated user data
+        $user->refresh();
+        $userRoles = $user->roles->pluck('name');
+        $userPermissions = $user->permissions->pluck('name');
+
+        return Inertia::render('UserRolesPermissions', [
+            'user' => $user,
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+            'userRoles' => $userRoles,
+            'userPermissions' => $userPermissions
         ]);
     }
 }
