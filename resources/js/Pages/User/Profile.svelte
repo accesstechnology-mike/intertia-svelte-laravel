@@ -39,12 +39,17 @@
 
     // user.avatar = user.avatar.replace("?sz=50", "?sz=200");
 
+    const currentDate = new Date();
     //this month title
-    let thisMonth = new Date().toLocaleString("default", { month: "long" });
+    const thisMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth()
+    ).toLocaleDateString("default", { month: "long" });
     //previous month title
-    let lastMonth = new Date(
-        new Date().setMonth(new Date().getMonth() - 1)
-    ).toLocaleString("default", { month: "long" });
+    const lastMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - 1
+    ).toLocaleDateString("default", { month: "long" });
 
     let face;
     //if ontarget is greater than 1, let emotion be
@@ -62,7 +67,7 @@
 </svelte:head>
 
 <div class="flex">
-    <div class="flex-auto">
+    <div class="flex-1">
         <h1 class="pb-2">{pageName}</h1>
         <h3 class="pb-2">{user.roles[0].name}</h3>
         <p>🏠 {user.postcode}</p>
@@ -72,81 +77,84 @@
         <Avatar src={user.avatar} alt={user.name} width="100%" />
     </div>
 </div>
+<hr class="mb-4" />
 
-<div class="flex flex-wrap">
-    <div class="w-full sm:w-1/2">
-        <hr class="mb-4" />
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div class="">
         <!-- hide section if role is Technician or Assistant or Admin -->
         {#if user.roles[0].name != "AT Technician" && user.roles[0].name != "AT Assistant" && user.roles[0].name != "AT Admin"}
-            <h3 class="pb-1">🥰<strong> {clientCount} clients</strong></h3>
+            <div class="card p-4 w-full h-60">
+                <h3 class="pb-1 mb-4">🥰<strong> {clientCount} clients</strong></h3>
+                //breakdown of weighting / statuses etc.
+            </div>
 
-            //breakdown of weighting / statuses etc.
-
-            <hr class="mt-8 mb-0 pb-0" />
-
-            <br />
         {/if}
 
         <!-- hide section if role is  Admin -->
         {#if user.role != "Admin"}
-            <span class="text-lg"
-                >Client Intervention: <strong>{equivHoursThisQuarter}</strong>
-            </span>hrs
-            <!-- <span class="text-sm"> - <i> {onTarget}:1</i> </span> -->
-            {face}
-
-            <ProgressBar
-                label="Progress Bar"
-                value={percentEquivHoursThisQuarter}
-                max={100}
-                class="mb-6"
-                height="h-3"
-                meter="bg-green-500"
-            />
-
-            <i
-                ><span class="text-sm"
-                    >Reference milestone: <strong>{currentTarget}</strong>
-                </span><span class="text-xs"> / {userTarget} hrs</span></i
-            >
-
-            <ProgressBar
-                label="Minimum"
-                value={percentOfQuarter}
-                max={100}
-                class="mb-3"
-                height="h-0.5"
-                meter="bg-yellow-600"
-            />
-
-            <!-- total mileage
-      <p><strong>Total</strong>: {totalMiles} miles</p>
-      -->
+            <div class="card p-4 mt-3 h-32">
+                <span class="text-lg"
+                    >Client Intervention: <strong
+                        >{equivHoursThisQuarter}</strong
+                    >
+                </span>hrs
+                <!-- <span class="text-sm"> - <i> {onTarget}:1</i> </span> -->
+                {face}
+                <ProgressBar
+                    label="Progress Bar"
+                    value={percentEquivHoursThisQuarter}
+                    max={100}
+                    class="mb-6"
+                    height="h-3"
+                    meter="bg-green-500"
+                />
+                <i
+                    ><span class="text-sm"
+                        >Reference milestone: <strong>{currentTarget}</strong>
+                    </span><span class="text-xs"> / {userTarget} hrs</span></i
+                >
+                <ProgressBar
+                    label="Minimum"
+                    value={percentOfQuarter}
+                    max={100}
+                    class="mb-3"
+                    height="h-0.5"
+                    meter="bg-yellow-600"
+                />
+                <!-- total mileage
+                      <p><strong>Total</strong>: {totalMiles} miles</p>
+                      -->
+            </div>
         {/if}
     </div>
-    <div class="w-full sm:w-1/2">
-        <hr class="mb-4" />
-        <h3 class="text-2xl font-semibold mb-4 pb-0">
-            📈 Last 12 Weeks Intervention <span class="text-xs"
-                ><i>rolling average</i></span
-            >
-        </h3>
-        <div style="width: 100%; height: 200px;">
-            <Chart data={rollingAverages} />
+
+    <div class="">
+        <div class="card p-4 ">
+
+            <h3 class="text-2xl font-semibold mb-4 pb-0">
+                📈 Last 12 Weeks Intervention <span class="text-xs"
+                    ><i>rolling average</i></span
+                >
+            </h3>
+            <div style="width: 100%;">
+                <Chart data={rollingAverages} />
+            </div>
         </div>
     </div>
 </div>
+<hr class="my-4" />
 
-<div class="flex-1 flex-row">
-    <div>
-        <hr class="my-4" />
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div class="card p-4 gap-4">
         <span class="text-xl"
             >🚗 {thisMonth}: <strong> {mileageThisMonth} </strong></span
         ><span class="text-sm"> <i>{milesThisMonth} miles</i></span>
-        <!-- mileage last month -->
-        <p class="mt-4">
-            {lastMonth}: {mileageLastMonth}
-            <span class="text-sm"> <i>{milesLastMonth} miles</i></span>
-        </p>
+    </div>
+    <!-- mileage last month -->
+    <div class="card p-4 gap-4">
+        <span class="text-xl"
+            >🚘 {lastMonth}: <strong> {mileageLastMonth} </strong></span
+        >
+        <span class="text-sm"> <i>{milesLastMonth} miles</i></span>
     </div>
 </div>
