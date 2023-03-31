@@ -54,6 +54,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = Auth::user()->load('roles', 'roles.permissions');
+        $viewAsRole = session('view_as_role', null);
 
         //sum log hours for this quarter
         $hoursThisQuarter = Log::where('user_id', $user->id)
@@ -165,6 +166,7 @@ class UserController extends Controller
 
         return Inertia::render('User/Profile', [
             'user' => $user,
+            'viewAsRole' => $viewAsRole,
             'milesThisMonth' => $milesThisMonth,
             'milesLastMonth' => $milesLastMonth,
             'totalMiles' => $totalMiles,
@@ -175,6 +177,7 @@ class UserController extends Controller
             'clientCount' => $clientCount,
             'last12Weeks' => $mergedWeeks,
             'rollingAverages' => $rollingAverages,
+
 
         ]);
     }

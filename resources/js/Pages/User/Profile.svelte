@@ -1,5 +1,10 @@
 <script>
     export let user;
+
+    export let viewAsRole;
+
+    let displayedRole = viewAsRole ? viewAsRole : user.roles[0].name;
+
     export let milesThisMonth;
     export let milesLastMonth;
     // export let totalMiles
@@ -39,17 +44,35 @@
 
     // user.avatar = user.avatar.replace("?sz=50", "?sz=200");
 
-    const currentDate = new Date();
-    //this month title
-    const thisMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth()
-    ).toLocaleDateString("default", { month: "long" });
-    //previous month title
-    const lastMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() - 1
-    ).toLocaleDateString("default", { month: "long" });
+    function getMonthFormat(date, format) {
+        return date.toLocaleDateString("default", { month: format });
+    }
+
+    function updateMonthFormats() {
+        const currentDate = new Date();
+        const lastMonth = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 1
+        );
+        const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
+        const format = isLargeScreen ? "long" : "short";
+
+        return {
+            currentMonth: getMonthFormat(currentDate, format),
+            lastMonth: getMonthFormat(lastMonth, format),
+        };
+    }
+
+    let { currentMonth, lastMonth } = updateMonthFormats();
+
+    window.addEventListener("resize", () => {
+        ({ currentMonth, lastMonth } = updateMonthFormats());
+    });
+
+    // const lastMonth = new Date(
+    //     currentDate.getFullYear(),
+    //     currentDate.getMonth() - 1
+    // ).toLocaleDateString("default", { month: "short" });
 
     let face;
     //if ontarget is greater than 1, let emotion be
@@ -69,7 +92,7 @@
 <div class="flex">
     <div class="flex-1">
         <h1 class="pb-2">{pageName}</h1>
-        <h3 class="pb-2">{user.roles[0].name}</h3>
+        <h3 class="pb-2">{displayedRole}</h3>
         <p>🏠 {user.postcode}</p>
     </div>
 
@@ -82,17 +105,18 @@
 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
     <div class="">
         <!-- hide section if role is Technician or Assistant or Admin -->
-        {#if user.roles[0].name != "AT Technician" && user.roles[0].name != "AT Assistant" && user.roles[0].name != "AT Admin"}
-            <div class="card p-4 w-full h-60">
-                <h3 class="pb-1 mb-4">🥰<strong> {clientCount} clients</strong></h3>
+        {#if displayedRole != "AT Technician" && displayedRole != "AT Assistant" && displayedRole != "AT Admin"}
+            <div class="card p-4 w-full h-60 mb-3">
+                <h3 class="pb-1 mb-4">
+                    🥰<strong> {clientCount} clients</strong>
+                </h3>
                 //breakdown of weighting / statuses etc.
             </div>
-
         {/if}
 
         <!-- hide section if role is  Admin -->
-        {#if user.role != "Admin"}
-            <div class="card p-4 mt-3 h-32">
+        {#if displayedRole != "Admin"}
+            <div class="card p-4 h-32">
                 <span class="text-lg"
                     >Client Intervention: <strong
                         >{equivHoursThisQuarter}</strong
@@ -130,9 +154,9 @@
 
     <div class="">
         <div class="card p-4 ">
-
             <h3 class="text-2xl font-semibold mb-4 pb-0">
-                📈 Last 12 Weeks Intervention <span class="text-xs"
+                📈 Last 12 Weeks Intervention
+                <span class="text-xs hidden xl:inline-flex"
                     ><i>rolling average</i></span
                 >
             </h3>
@@ -145,16 +169,15 @@
 <hr class="my-4" />
 
 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-    <div class="card p-4 gap-4">
-        <span class="text-xl"
-            >🚗 {thisMonth}: <strong> {mileageThisMonth} </strong></span
-        ><span class="text-sm"> <i>{milesThisMonth} miles</i></span>
+    <div class="card p-4 gap-4 space-x-4">
+        <span class="text-xl">🚗 {currentMonth} </span>
+        <span class="text-xl"><strong> {mileageThisMonth} </strong></span>
+        <span class="text-sm"> <i>{milesThisMonth} miles</i></span>
     </div>
     <!-- mileage last month -->
-    <div class="card p-4 gap-4">
-        <span class="text-xl"
-            >🚘 {lastMonth}: <strong> {mileageLastMonth} </strong></span
-        >
+    <div class="card p-4 gap-4 space-x-4">
+        <span class="text-xl">🚘 {lastMonth} </span>
+        <span class="text-xl"><strong> {mileageLastMonth} </strong></span>
         <span class="text-sm"> <i>{milesLastMonth} miles</i></span>
     </div>
 </div>

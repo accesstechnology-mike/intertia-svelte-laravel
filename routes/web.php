@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Api\RoleSwitchController;
 
 // home route
 Route::get('/', function () {
@@ -38,4 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user}/remove-role/{role}', [UserController::class, 'removeRole'])->name('users.remove-role');
     Route::post('/users/{user}/give-permission/{permission}', [UserController::class, 'givePermission'])->name('users.give-permission');
     Route::post('/users/{user}/revoke-permission/{permission}', [UserController::class, 'revokePermission'])->name('users.revoke-permission');
+
+    Route::get('/role-switch', [RoleSwitchController::class, 'index'])->name('role-switch');
 });
