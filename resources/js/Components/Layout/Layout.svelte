@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     // Your selected Skeleton theme:
     import "@skeletonlabs/skeleton/themes/theme-skeleton.css";
 
@@ -10,6 +10,8 @@
 
     import { AppShell } from "@skeletonlabs/skeleton";
     import { Drawer, drawerStore } from "@skeletonlabs/skeleton";
+    import { Modal, modalStore } from "@skeletonlabs/skeleton";
+    import type { ModalSettings, ModalComponent } from "@skeletonlabs/skeleton";
 
     import Appbar from "./Appbar.svelte";
     import Sidebar from "./Sidebar.svelte";
@@ -42,7 +44,7 @@
 <Drawer>
     <Sidebar {role} />
 </Drawer>
-
+<Modal />
 <AppShell
     slotSidebarLeft="bg-surface-500/5 w-0 lg:w-56"
     slotPageHeader="page-padding"

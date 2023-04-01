@@ -1,45 +1,38 @@
 <script>
-    // Props
-    /** Exposes parent props to this component. */
-    // export let parent: any;
+    import { ListBox, ListBoxItem, modalStore } from "@skeletonlabs/skeleton";
+    import { statusMapping } from "../../statusMapping"; // Import the shared mapping
+    import Fa from "svelte-fa";
+
+    import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
     export let client;
     export let onUpdateClientStatus;
 
-    // Stores
-    import { modalStore } from "@skeletonlabs/skeleton";
-    import { statusMapping } from "../../statusMapping"; // Import the shared mapping
-
-    // We've created a custom submit function to pass the response and close the modal.
     function onFormSubmit(newStatus) {
-        onUpdateClientStatus(client, newStatus);
+        onUpdateClientStatus(client, { target: { value: newStatus } });
         modalStore.close();
     }
-
-    // Base Classes
-    const cBase = "card p-4 w-modal shadow-xl space-y-4";
-    const cHeader = "text-2xl font-bold";
-    const cForm =
-        "border border-surface-500 p-4 space-y-4 rounded-container-token";
 </script>
 
-<div>
-    <!-- Enable for debugging: -->
-    <!-- <pre>{JSON.stringify(formData, null, 2)}</pre> -->
-    <form class="modal-form {cForm}">
+<div class="card p-4 w-modal shadow-xl relative ">
+    <button
+        class="btn-icon variant-soft absolute top-8 right-8"
+        on:click={modalStore.close}
+    >
+        <Fa icon={faXmark} />
+    </button>
+    <!-- <button class="btn" on:click={modalStore.close}>Cancel</button> -->
+
+    <ListBox class="border border-surface-500 p-4 rounded-container-token">
         {#each Object.keys(statusMapping) as key}
-            <button
-                class="btn"
-                type="button"
+            <ListBoxItem
+                name={key}
+                value={key}
                 on:click={() => onFormSubmit(key)}
             >
                 {statusMapping[key]}
-            </button>
+            </ListBoxItem>
         {/each}
-    </form>
+    </ListBox>
     <!-- prettier-ignore -->
-    <footer class="modal-footer {parent.regionFooter}">
-        <button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>
-        <button class="btn {parent.buttonPositive}" on:click={onFormSubmit}>Submit Form</button>
-    </footer>
 </div>

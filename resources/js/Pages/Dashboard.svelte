@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import axios from "axios";
     import { statusMapping } from "../statusMapping"; // Import the shared mapping
+
+    import { Modal, modalStore } from "@skeletonlabs/skeleton";
+    import type { ModalSettings, ModalComponent } from "@skeletonlabs/skeleton";
+    import ClientStatusModal from "../Components/Dashboard/ClientStatusModal.svelte";
 
     let isLoading = true;
     let groupedClients = {};
@@ -64,6 +68,32 @@
             console.error(error);
         }
     }
+
+    // function openModal(client) {
+    //     modalStore.trigger({
+    //         component: ModalForm,
+    //         props: { client, onUpdateClientStatus: updateClientStatus },
+    //         title: "Update Client Status",
+    //         body: "Select a new status for the client:",
+    //     });
+    // }
+
+    function openModal(clientToEdit) {
+        const modalComponent = {
+            ref: ClientStatusModal,
+            props: {
+                client: clientToEdit,
+                onUpdateClientStatus: updateClientStatus,
+            },
+        };
+
+        modalStore.trigger({
+            type: "component",
+            component: modalComponent,
+            title: "Update Client Status",
+            body: "Select a new status for the client:",
+        });
+    }
 </script>
 
 {#if isLoading}
@@ -73,23 +103,23 @@
         {#each Object.keys(groupedClients) as status}
             {#if groupedClients[status].length > 0}
                 <h2>{statusMapping[status]}</h2>
-                {#each groupedClients[status] as client}
-                    <div class="card p-3">
-                        <h3>{client.name}</h3>
-                        <select
-                            class="select"
-                            value={client.client_status}
-                            on:change={(event) =>
-                                updateClientStatus(client, event)}
-                        >
-                            {#each Object.keys(statusMapping) as key}
-                                <option value={key}>{statusMapping[key]}</option
-                                >
-                            {/each}
-                        </select>
-                    </div>
-                    <hr />
-                {/each}
+
+                <!-- insert tailwind grid -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                    {#each groupedClients[status] as client}
+                        <div class="card p-3 card-hover">
+                            <h3>{client.name}</h3>
+                            <button
+                                class="btn"
+                                on:click={() => openModal(client)}
+                            >
+                                Update Status
+                            </button>
+                        </div>
+                    {/each}
+                </div>
             {/if}
         {/each}
     </div>

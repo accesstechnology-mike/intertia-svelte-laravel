@@ -77,7 +77,7 @@ class UserController extends Controller
 
         //calculate eqiv hours for this quarter
         //round here, because svelte doesn't like decimals
-        $equivHoursThisQuarter = round((($hoursThisQuarter * $rate) + ($distanceThisQuarter * $mileageRate) + ($travelTimeThisQuarter * $travelRate)) / $rate);
+        $equivHoursThisQuarter = round((($hoursThisQuarter * $rate) + ($distanceThisQuarter * $mileageRate) + ($travelTimeThisQuarter * $travelRate)) / $rate, 1);
 
 
         // Get total hours for each working week, for the last 24 weeks
@@ -135,29 +135,30 @@ class UserController extends Controller
         $rollingAverages = collect($rollingAverages);
 
         //get percentage of equivalent hours compared to user->target
-        $percentEquivHoursThisQuarter = round($equivHoursThisQuarter / $user->target * 100);
+        $percentEquivHoursThisQuarter = round($equivHoursThisQuarter / $user->target * 100, 1);
 
         //get percentage of time through current quarter
         $quarterStart = Carbon::now()->startOfQuarter();
         $quarterEnd = Carbon::now()->endOfQuarter();
         $quarterLength = $quarterStart->diffInDays($quarterEnd);
         $daysIntoQuarter = Carbon::now()->diffInDays($quarterStart);
-        $percentOfQuarter = round($daysIntoQuarter / $quarterLength * 100);
+        $percentOfQuarter = round($daysIntoQuarter / $quarterLength * 100, 1);
 
         //milesthismonth
         $milesThisMonth = Log::where('user_id', $user->id)
+            ->whereYear('date', date('Y'))
             ->whereMonth('date', date('m'))
             ->sum('distance');
 
         //mileslastmonth
         $milesLastMonth = Log::where('user_id', $user->id)
+            ->whereYear('date', date('Y'))
             ->whereMonth('date', date('m') - 1)
             ->sum('distance');
 
         //totalmiles
-        $totalMiles = Log::where('user_id', $user->id)
-            ->sum('distance');
-
+        // $totalMiles = Log::where('user_id', $user->id)
+        //     ->sum('distance');
 
         //count how many clients where status is not inactive
         $clientCount = Client::where('user_id', $user->id)
@@ -169,7 +170,7 @@ class UserController extends Controller
             'viewAsRole' => $viewAsRole,
             'milesThisMonth' => $milesThisMonth,
             'milesLastMonth' => $milesLastMonth,
-            'totalMiles' => $totalMiles,
+            // 'totalMiles' => $totalMiles,
             'equivHoursThisQuarter' => $equivHoursThisQuarter,
             'userTarget' => $user->target,
             'percentEquivHoursThisQuarter' => $percentEquivHoursThisQuarter,
@@ -177,7 +178,6 @@ class UserController extends Controller
             'clientCount' => $clientCount,
             'last12Weeks' => $mergedWeeks,
             'rollingAverages' => $rollingAverages,
-
 
         ]);
     }
