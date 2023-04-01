@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { AppBar } from "@skeletonlabs/skeleton";
     import { LightSwitch } from "@skeletonlabs/skeleton";
 
@@ -8,11 +8,16 @@
     import { faUser } from "@fortawesome/free-regular-svg-icons";
     import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-    let src = "./android-chrome-192x192.png";
+    let src = "/android-chrome-192x192.png";
+
+    export let currentPage;
 
     function drawerOpen() {
         drawerStore.open({});
     }
+
+    $: classesActive = (href: string) =>
+        href === currentPage ? "limegreen" : "";
 </script>
 
 <AppBar>
@@ -38,8 +43,8 @@
         </div>
     </svelte:fragment>
     <svelte:fragment slot="trail">
-        <a class="btn-icon variant-soft" href="/profile">
-            <Fa icon={faUser} />
+        <a class="btn-icon variant-soft " href="/profile">
+            <Fa icon={faUser} color={classesActive("/profile")} />
         </a>
         <a class="btn-icon variant-soft" href="/logout">
             <Fa icon={faXmark} />

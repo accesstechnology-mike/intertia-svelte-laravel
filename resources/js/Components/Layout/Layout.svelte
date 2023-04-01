@@ -25,6 +25,7 @@
     let user = $page.props.auth.user;
     let viewAsRole = $page.props.auth.viewAsRole;
     let role = user ? (viewAsRole ? viewAsRole : user.roles[0].name) : "";
+    let currentPage = $page.url;
 
     //import flashmessage component
     import FlashMessage from "./FlashMessage.svelte";
@@ -42,15 +43,17 @@
 </script>
 
 <Drawer>
-    <Sidebar {role} />
+    <Sidebar {role} {currentPage} />
 </Drawer>
 <Modal />
 <AppShell
     slotSidebarLeft="bg-surface-500/5 w-0 lg:w-56"
     slotPageHeader="page-padding"
 >
-    <svelte:fragment slot="header"><Appbar /></svelte:fragment>
-    <svelte:fragment slot="sidebarLeft"><Sidebar {role} /></svelte:fragment>
+    <svelte:fragment slot="header"><Appbar {currentPage} /></svelte:fragment>
+    <svelte:fragment slot="sidebarLeft"
+        ><Sidebar {role} {currentPage} /></svelte:fragment
+    >
 
     <div class="page-padding">
         <!-- pass message and type to flashmessage component -->

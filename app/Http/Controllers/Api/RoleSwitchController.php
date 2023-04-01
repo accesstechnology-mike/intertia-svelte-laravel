@@ -36,15 +36,15 @@ class RoleSwitchController extends Controller
             Session::put('view_as_role', $role);
         }
 
-        $redirectUrl = route('profile');
-        if ($request->routeIs('profile')) {
-            $redirectUrl = route('dashboard');
-        }
+        // $redirectUrl = route('profile');
+        // if ($request->routeIs('profile')) {
+        //     $redirectUrl = route('dashboard');
+        // }
 
         $request->session()->flash('success', 'Role switched to ' . $role);
 
         return response()->json([
-            'redirect' => route('dashboard'),
+            'redirect' => env("APP_URL") . '/dashboard',
         ]);
     }
 }

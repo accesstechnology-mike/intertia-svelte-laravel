@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
     import { drawerStore } from "@skeletonlabs/skeleton";
 
     export let role;
+    export let currentPage;
 
     import Fa from "svelte-fa";
     import { faHouseUser } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +12,16 @@
     function drawerClose() {
         drawerStore.close();
     }
+
+    $: classesActive = (href: string) => {
+        if (href === currentPage) {
+            return {
+                color: "limegreen",
+            };
+        } else {
+            return {};
+        }
+    };
 </script>
 
 <section class="p-4 pb-20 space-y-4 overflow-y-auto">
@@ -18,7 +29,13 @@
         <ul>
             <li>
                 <a href="/dashboard">
-                    <span class=""> <Fa icon={faHouseUser} /></span>
+                    <span>
+                        <Fa
+                            icon={faHouseUser}
+                            fw
+                            {...classesActive("/dashboard")}
+                        /></span
+                    >
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -26,7 +43,7 @@
             <hr />
             <li>
                 <a href="https://handbook.accesstechnology.co.uk">
-                    <span> <Fa icon={faBook} /></span>
+                    <span> <Fa icon={faBook} fw /></span>
                     <span>Handbook</span>
                     <Fa icon={faUpRightFromSquare} size="xs" class="mt-0.5" />
                 </a>
@@ -36,7 +53,13 @@
                 <hr />
                 <li>
                     <a href="/role-switch">
-                        <span> <Fa icon={faUserAltSlash} /></span>
+                        <span>
+                            <Fa
+                                icon={faUserAltSlash}
+                                fw
+                                {...classesActive("/role-switch")}
+                            /></span
+                        >
                         <span>Role Switch</span>
                     </a>
                 </li>
