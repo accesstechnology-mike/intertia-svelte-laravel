@@ -140,6 +140,7 @@ class UserController extends Controller
 
             $rollingAverages[] = [
                 'week' => $mergedWeeks[$i]->week,
+                'start_date' => $mergedWeeks[$i]->start_date,
                 'average' => $sum / 12,
             ];
         }

@@ -4,6 +4,13 @@ import "../css/app.css";
 import { createInertiaApp } from "@inertiajs/svelte";
 import Layout from "./Components/Layout/Layout.svelte";
 
+import { initializeAnalytics } from "./analytics";
+
+// Replace with your Google Analytics tracking code
+const GA_TRACKING_CODE = "G-XQREYN1QYP";
+
+initializeAnalytics(GA_TRACKING_CODE);
+
 createInertiaApp({
     resolve: async (name) => {
         const pages = import.meta.glob("./Pages/**/*.svelte");

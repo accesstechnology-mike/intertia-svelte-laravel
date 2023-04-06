@@ -39,7 +39,7 @@
 
         <hr />
 
-        <a href="https://handbook.accesstechnology.co.uk">
+        <a href="https://handbook.accesstechnology.co.uk" target="_blank">
             <span> <Fa icon={faBook} fw /></span>
             <span>Handbook</span>
             <Fa icon={faUpRightFromSquare} size="xs" class="mt-0.5" />

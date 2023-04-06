@@ -15,8 +15,6 @@
     export let clientCount;
     export let rollingAverages;
 
-    console.log("last12Weeks", rollingAverages);
-
     import Chart from "../../Components/Profile/Chart.svelte";
 
     let mileageThisMonth = (milesThisMonth * 0.45).toLocaleString("en-GB", {
@@ -32,7 +30,7 @@
     equivHoursThisQuarter = equivHoursThisQuarter;
 
     //currentTarget as percertofQuarter of userTarget
-    let currentTarget = (userTarget * percentOfQuarter) / 100;
+    let currentTarget = ((userTarget * percentOfQuarter) / 100).toFixed(1);
 
     //onTarget equivHoursThisQuarter/currentTarget to 1 decimal place
     let onTarget = (equivHoursThisQuarter / currentTarget).toFixed(1);
@@ -69,18 +67,13 @@
         ({ currentMonth, lastMonth } = updateMonthFormats());
     });
 
-    // const lastMonth = new Date(
-    //     currentDate.getFullYear(),
-    //     currentDate.getMonth() - 1
-    // ).toLocaleDateString("default", { month: "short" });
-
     let face;
     //if ontarget is greater than 1, let emotion be
 
     if (onTarget >= 1) {
         face = "🥳";
     } else {
-        face = null;
+        face = "";
     }
 </script>
 
@@ -117,19 +110,18 @@
         <!-- hide section if role is  Admin -->
         {#if displayedRole != "Admin"}
             <div class="card p-4 h-32">
-                <span class="text-lg"
+                <span class="text-lg mt-12"
                     >Client Intervention: <strong
                         >{equivHoursThisQuarter}</strong
                     >
                 </span>hrs
-                <!-- <span class="text-sm"> - <i> {onTarget}:1</i> </span> -->
                 {face}
                 <ProgressBar
                     label="Progress Bar"
                     value={percentEquivHoursThisQuarter}
                     max={100}
-                    class="mb-6"
-                    height="h-3"
+                    class="mb-2"
+                    height="h-2.5"
                     meter="bg-green-500"
                 />
                 <i
@@ -142,7 +134,7 @@
                     value={percentOfQuarter}
                     max={100}
                     class="mb-3"
-                    height="h-0.5"
+                    height="h-2.5"
                     meter="bg-yellow-600"
                 />
                 <!-- total mileage

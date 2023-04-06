@@ -20,7 +20,7 @@
     import { page } from "@inertiajs/svelte";
 
     //console log page
-    console.log($page);
+    // console.log($page);
 
     let user = $page.props.auth.user;
     let viewAsRole = $page.props.auth.viewAsRole;
