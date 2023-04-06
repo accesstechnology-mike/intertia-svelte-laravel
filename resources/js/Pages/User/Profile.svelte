@@ -7,7 +7,7 @@
 
     export let milesThisMonth;
     export let milesLastMonth;
-    // export let totalMiles
+    export let timeWithCompany;
     export let percentEquivHoursThisQuarter;
     export let percentOfQuarter;
     export let userTarget;
@@ -93,7 +93,7 @@
     <div class="flex-1">
         <h1 class="pb-2">{pageName}</h1>
         <h3 class="pb-2">{displayedRole}</h3>
-        <p>🏠 {user.postcode}</p>
+        <p>🏠 {user.postcode} | 📅 {timeWithCompany}</p>
     </div>
 
     <div class="flex-initial w-28">
@@ -153,7 +153,7 @@
     </div>
 
     <div class="">
-        <div class="card p-4 ">
+        <div class="card p-4">
             <h3 class="text-2xl font-semibold mb-4 pb-0">
                 📈 Last 12 Weeks Intervention
                 <span class="text-xs hidden xl:inline-flex"

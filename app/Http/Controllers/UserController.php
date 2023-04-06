@@ -8,6 +8,7 @@ use App\Models\User;
 use Auth;
 use App\Models\Log;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use App\Models\Client;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -55,6 +56,17 @@ class UserController extends Controller
     {
         $user = Auth::user()->load('roles', 'roles.permissions');
         $viewAsRole = session('view_as_role', null);
+
+        //calculate how long employee been with company from user->start_date
+        $startDate = Carbon::parse($user->start_date);
+        $now = Carbon::now();
+        $years = $startDate->diffInYears($now);
+        $months = $startDate->addYears($years)->diffInMonths($now);
+        $days = $startDate->addMonths($months)->diffInDays($now);
+        $years = $years > 0 ? $years . ' years ' : '';
+        $months = $months > 0 ? $months . ' months ' : '';
+        $days = $days > 0 ? $days . ' days ' : '';
+        $timeWithCompany = $years . $months . $days;
 
         //sum log hours for this quarter
         $hoursThisQuarter = Log::where('user_id', $user->id)
@@ -178,6 +190,7 @@ class UserController extends Controller
             'clientCount' => $clientCount,
             'last12Weeks' => $mergedWeeks,
             'rollingAverages' => $rollingAverages,
+            'timeWithCompany' => $timeWithCompany,
 
         ]);
     }

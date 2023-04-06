@@ -42,4 +42,16 @@ Route::middleware('auth')->group(function () {
     // Route::post('/users/{user}/revoke-permission/{permission}', [UserController::class, 'revokePermission'])->name('users.revoke-permission');
 
     Route::get('/role-switch', [RoleSwitchController::class, 'index'])->name('role-switch');
+
+    Route::get('/leave-requests', function () {
+        return Inertia::render('User/LeaveRequests');
+    })->name('leave-requests');
+
+    Route::get('/leave-types', function () {
+        return Inertia::render('User/LeaveTypes');
+    })->name('leave-types');
+
+    Route::get('/holidays', function () {
+        return Inertia::render('User/Holidays');
+    })->name('holidays');
 });
