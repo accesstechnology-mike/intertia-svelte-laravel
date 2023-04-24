@@ -69,15 +69,6 @@
         }
     }
 
-    // function openModal(client) {
-    //     modalStore.trigger({
-    //         component: ModalForm,
-    //         props: { client, onUpdateClientStatus: updateClientStatus },
-    //         title: "Update Client Status",
-    //         body: "Select a new status for the client:",
-    //     });
-    // }
-
     function openModal(clientToEdit) {
         const modalComponent = {
             ref: ClientStatusModal,
@@ -102,12 +93,10 @@
     <div class="">
         {#each Object.keys(groupedClients) as status}
             {#if groupedClients[status].length > 0}
-                <h2>{statusMapping[status]}</h2>
-
+                <h3 class="pt-3 pb-2">{statusMapping[status]}</h3>
+                <hr class="pb-4" />
                 <!-- insert tailwind grid -->
-                <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                >
+                <div class="grid grid-cols-1 gap-4">
                     {#each groupedClients[status] as client}
                         <div class="card p-3 card-hover">
                             <h3>{client.name}</h3>
@@ -115,7 +104,7 @@
                                 class="btn"
                                 on:click={() => openModal(client)}
                             >
-                                Update Status
+                                 Change Status
                             </button>
                         </div>
                     {/each}

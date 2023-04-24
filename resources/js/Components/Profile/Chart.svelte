@@ -9,7 +9,17 @@
 
     Chart.defaults.font.family = "'Inter', sans-serif";
 
-    $: labels = data.map((item) => `Week ${item.week}`);
+    // $: labels = data.map((item) => `Week ${item.week}`);
+
+    $: labels = data.map((item) => {
+        const startDate = new Date(item.start_date);
+        const formattedDate = startDate.toLocaleDateString("en-US", {
+            // year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
+        return `wc ${formattedDate}`;
+    });
     $: chartData = data.map((item) => item.average);
     $: chartConfig = {
         labels,

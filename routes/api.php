@@ -34,4 +34,12 @@ Route::middleware(['auth'])->group(function () {
     //roleswitch
     Route::get('/roles', [RoleController::class, 'index']);
     Route::post('/role-switch', [RoleSwitchController::class, 'store']);
+    //leave requests
+    Route::apiResource('leave-requests', LeaveRequestController::class)->except(['create', 'edit']);
+    Route::post('leave-requests/{id}/approve', [LeaveRequestController::class, 'approve']);
+    Route::post('leave-requests/{id}/reject', [LeaveRequestController::class, 'reject']);
+    //leave types
+    Route::apiResource('leave-types', LeaveTypeController::class)->except(['create', 'edit']);
+    //holidays
+    Route::apiResource('holidays', HolidayController::class)->except(['create', 'edit']);
 });
