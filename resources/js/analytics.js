@@ -1,4 +1,4 @@
-import { Inertia } from "@inertiajs/inertia-svelte";
+import { Inertia } from "@inertiajs/inertia";
 
 export function initializeAnalytics(trackingId) {
     window.gtag =
