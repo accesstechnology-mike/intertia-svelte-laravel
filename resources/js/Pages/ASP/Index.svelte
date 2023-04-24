@@ -1,12 +1,11 @@
 <script>
-    import { InertiaLink } from "@inertiajs/svelte";
-    import { page } from "@inertiajs/svelte";
+    import { InertiaLink } from "@inertiajs/inertia-svelte";
 
-    const clients = $page.clients;
+    export let clients;
 </script>
 
-<h1>Clients</h1>
-<InertiaLink href="/asp/create" class="button">Create New Client</InertiaLink>
+<h1>ASP Clients</h1>
+<a href="/asp/create" class="button">Create New ASP Client</a>
 <table>
     <thead>
         <tr>

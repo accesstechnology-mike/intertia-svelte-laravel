@@ -22,6 +22,33 @@
 
 <h1>Edit Client</h1>
 <form on:submit|preventDefault={handleSubmit}>
-    <!-- Add form inputs for each field -->
+    <label>
+        Client ID
+        <input type="number" bind:value={formData.client_id} required />
+    </label>
+    <label>
+        Amount
+        <input
+            type="number"
+            step="0.01"
+            bind:value={formData.amount}
+            required
+        />
+    </label>
+    <label>
+        Type
+        <select bind:value={formData.type} required>
+            <option value="Standard">Standard</option>
+            <option value="DWB">DWB</option>
+        </select>
+    </label>
+    <label>
+        Start Date
+        <input type="date" bind:value={formData.start_date} required />
+    </label>
+    <label>
+        End Date
+        <input type="date" bind:value={formData.end_date} required />
+    </label>
     <button type="submit">Update</button>
 </form>
