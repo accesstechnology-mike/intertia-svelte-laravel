@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Api\RoleSwitchController;
+use App\Http\Controllers\ASPController;
+
 
 // home route
 Route::get('/', function () {
@@ -43,3 +45,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/role-switch', [RoleSwitchController::class, 'index'])->name('role-switch');
 });
+
+Route::middleware(['auth', 'role:Admin|Super Admin'])
+    ->prefix('asp')
+    ->group(function () {
+        Route::get('/', [ASPController::class, 'index'])->name('asp.index');
+        Route::get('/create', [ASPController::class, 'create'])->name('asp.create');
+        Route::post('/', [ASPController::class, 'store'])->name('asp.store');
+        Route::get('/{entry}/edit', [ASPController::class, 'edit'])->name('asp.edit');
+        Route::put('/{entry}', [ASPController::class, 'update'])->name('asp.update');
+        Route::delete('/{entry}', [ASPController::class, 'destroy'])->name('asp.destroy');
+    });
