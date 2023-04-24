@@ -13,7 +13,12 @@
     export let userTarget;
     export let equivHoursThisQuarter;
     export let clientCount;
+    export let totalClientCount;
     export let rollingAverages;
+    export let clients;
+
+    import { sortAndGroupClients } from "../../utils.js";
+    import { statusMapping } from "../../statusMapping.js";
 
     import Chart from "../../Components/Profile/Chart.svelte";
 
@@ -25,6 +30,8 @@
         style: "currency",
         currency: "GBP",
     });
+
+    const groupedClients = sortAndGroupClients(clients);
 
     //equivHoursThisQuarter to zero decimal places
     equivHoursThisQuarter = equivHoursThisQuarter;
@@ -40,7 +47,7 @@
     import { Avatar } from "@skeletonlabs/skeleton";
     import { ProgressBar } from "@skeletonlabs/skeleton";
 
-    // user.avatar = user.avatar.replace("?sz=50", "?sz=200");
+    user.avatar = user.avatar.replace("?sz=50", "?sz=200");
 
     function getMonthFormat(date, format) {
         return date.toLocaleDateString("default", { month: format });
@@ -95,21 +102,33 @@
 </div>
 <hr class="mb-4" />
 
-<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-    <div class="">
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 flex flex-col">
+    <div class="flex-1 flex flex-col">
         <!-- hide section if role is Technician or Assistant or Admin -->
         {#if displayedRole != "AT Technician" && displayedRole != "AT Assistant" && displayedRole != "AT Admin"}
-            <div class="card p-4 w-full h-60 mb-3">
-                <h3 class="pb-1 mb-4">
+            <div class="card p-4 w-full mb-3 flex-grow flex-shrink">
+                <h3 class="pb-1 mb-1">
                     🥰<strong> {clientCount} clients</strong>
+                    <span class="text-xs"> / {totalClientCount}</span>
                 </h3>
-                //breakdown of weighting / statuses etc.
+                <table>
+                    <tbody class="text-sm">
+                        {#each Object.keys(groupedClients) as status}
+                            <tr>
+                                <td class="pl-1 pr-4"
+                                    >{groupedClients[status].length}</td
+                                >
+                                <td>{statusMapping[status]}</td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
             </div>
         {/if}
 
-        <!-- hide section if role is  Admin -->
+        <!-- hide section if role is Admin -->
         {#if displayedRole != "Admin"}
-            <div class="card p-4 h-32">
+            <div class="card px-4 pt-3 pb-1 flex-grow flex-shrink">
                 <span class="text-lg mt-12"
                     >Client Intervention: <strong
                         >{equivHoursThisQuarter}</strong
@@ -144,20 +163,21 @@
         {/if}
     </div>
 
-    <div class="">
-        <div class="card p-4">
+    <div class="flex-1 flex flex-col">
+        <div class="card p-4 h-full">
             <h3 class="text-2xl font-semibold mb-4 pb-0">
                 📈 Last 12 Weeks Intervention
                 <span class="text-xs hidden xl:inline-flex"
                     ><i>rolling average</i></span
                 >
             </h3>
-            <div style="width: 100%;">
+            <div class="">
                 <Chart data={rollingAverages} />
             </div>
         </div>
     </div>
 </div>
+
 <hr class="my-4" />
 
 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">

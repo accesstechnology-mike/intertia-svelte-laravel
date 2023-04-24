@@ -68,6 +68,15 @@ class UserController extends Controller
         $days = $days > 0 ? $days . ' days ' : '';
         $timeWithCompany = $years . $months . $days;
 
+        //count clients where status is not inactive
+        $totalClientCount = Client::where('client_status', '!=', 'inactive')->count();
+
+        $clients = Client::where('user_id', auth()->user()->id)
+            ->where('client_status', '!=', 'inactive')
+            // ->orderByRaw($customOrder)
+            ->get();
+
+
         //sum log hours for this quarter
         $hoursThisQuarter = Log::where('user_id', $user->id)
             ->whereBetween('date', [Carbon::now()->startOfQuarter(), Carbon::now()->endOfQuarter()])
@@ -192,6 +201,9 @@ class UserController extends Controller
             'last12Weeks' => $mergedWeeks,
             'rollingAverages' => $rollingAverages,
             'timeWithCompany' => $timeWithCompany,
+            'totalClientCount' => $totalClientCount,
+            //clientcountbystatus
+            'clients' => $clients,
 
         ]);
     }

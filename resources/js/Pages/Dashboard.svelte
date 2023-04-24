@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import axios from "axios";
     import { statusMapping } from "../statusMapping"; // Import the shared mapping
+    import { sortAndGroupClients } from "../utils.js";
 
     import { Modal, modalStore } from "@skeletonlabs/skeleton";
     import type { ModalSettings, ModalComponent } from "@skeletonlabs/skeleton";
@@ -20,36 +21,6 @@
         } catch (error) {
             console.error(error);
         }
-    }
-
-    function sortAndGroupClients(clientsArray) {
-        const customOrder = [
-            "newClient",
-            "assessmentScheduled",
-            "initialAssessment",
-            "awaiting",
-            "setup",
-            "ongoing",
-            "review",
-            "yearly",
-        ];
-
-        let sortedClients = clientsArray.sort((a, b) => {
-            const statusOrderDiff =
-                customOrder.indexOf(a.client_status) -
-                customOrder.indexOf(b.client_status);
-
-            return statusOrderDiff !== 0
-                ? statusOrderDiff
-                : a.name.localeCompare(b.name);
-        });
-
-        return customOrder.reduce((acc, status) => {
-            acc[status] = sortedClients.filter(
-                (client) => client.client_status === status
-            );
-            return acc;
-        }, {});
     }
 
     onMount(loadClients);
@@ -104,7 +75,7 @@
                                 class="btn"
                                 on:click={() => openModal(client)}
                             >
-                                 Change Status
+                                Change Status
                             </button>
                         </div>
                     {/each}

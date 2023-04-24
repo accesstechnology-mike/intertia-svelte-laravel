@@ -62,6 +62,6 @@
 
 <style>
     canvas {
-        height: 300px !important;
+        height: 360px !important;
     }
 </style>
