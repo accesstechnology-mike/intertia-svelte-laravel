@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     //dashboard
     Route::get('/clients', [ClientController::class, 'index']);
     Route::patch('/clients/{client}', [ClientController::class, 'updateStatus']);
+
+    
     //permissions
     Route::get('/permissions', [PermissionController::class, 'index']);
     Route::post('/permissions', [PermissionController::class, 'store']);
