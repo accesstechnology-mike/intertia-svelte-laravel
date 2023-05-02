@@ -2,10 +2,10 @@
     // Your selected Skeleton theme:
     import "@skeletonlabs/skeleton/themes/theme-skeleton.css";
 
-    // This contains the bulk of Skeletons required styles:
+    // // This contains the bulk of Skeletons required styles:
     import "@skeletonlabs/skeleton/styles/all.css";
 
-    // Finally, your application's global stylesheet (sometimes labeled 'app.css')
+    // // Finally, your application's global stylesheet (sometimes labeled 'app.css')
     import "../../../css/app.css";
 
     import { AppShell } from "@skeletonlabs/skeleton";

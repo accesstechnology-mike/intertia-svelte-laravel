@@ -1,5 +1,5 @@
 // resources/js/app.js
-import "./bootstrap";
+// import "./bootstrap";
 import "../css/app.css";
 import { createInertiaApp } from "@inertiajs/svelte";
 import Layout from "./Components/Layout/Layout.svelte";

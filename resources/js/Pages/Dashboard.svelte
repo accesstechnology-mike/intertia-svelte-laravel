@@ -1,34 +1,26 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import axios from "axios";
+    import { Inertia } from "@inertiajs/inertia";
     import { statusMapping } from "../statusMapping"; // Import the shared mapping
     import { sortAndGroupClients } from "../utils.js";
 
-    import { Modal, modalStore } from "@skeletonlabs/skeleton";
-    import type { ModalSettings, ModalComponent } from "@skeletonlabs/skeleton";
+    import { modalStore } from "@skeletonlabs/skeleton";
     import ClientStatusModal from "../Components/Dashboard/ClientStatusModal.svelte";
+
+    export let clients = [];
 
     let isLoading = true;
     let groupedClients = {};
 
-    async function loadClients() {
-        try {
-            isLoading = true;
-            const response = await axios.get("/api/clients");
-            let clients = response.data;
-            groupedClients = sortAndGroupClients(clients);
-            isLoading = false;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    onMount(loadClients);
+    onMount(() => {
+        groupedClients = sortAndGroupClients(clients);
+        isLoading = false;
+    });
 
     async function updateClientStatus(client, event) {
         const newStatus = event.target.value;
         try {
-            await axios.patch(`/api/clients/${client.id}`, {
+            await Inertia.patch(`/api/clients/${client.id}`, {
                 client_status: newStatus,
             });
             client.client_status = newStatus;

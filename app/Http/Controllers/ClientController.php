@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
+use Inertia\Inertia;
 
 class ClientController extends Controller
 {
@@ -27,6 +28,6 @@ class ClientController extends Controller
         $client->client_status = $request->client_status;
         $client->save();
 
-        return response()->json(['message' => 'Client status updated']);
+        return Inertia::render('Dashboard');
     }
 }

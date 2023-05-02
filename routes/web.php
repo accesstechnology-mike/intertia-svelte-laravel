@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
     // // dashboard route
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::patch('/dashboard', [DashboardController::class, 'dashboard']);
+
     Route::get('/profile', [UserController::class, 'show'])->name('profile');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

@@ -5,10 +5,8 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 const codespaceName = process.env["CODESPACE_NAME"];
 const hmrPort = 3001;
 
-const hmrRemoteHost = codespaceName
-    ? `${codespaceName}-${hmrPort}.githubpreview.dev`
-    : "localhost";
-const hmrRemotePort = codespaceName ? 443 : hmrPort;
+const hmrRemoteHost = "localhost";
+const hmrRemotePort = hmrPort;
 
 export default defineConfig({
     server: {
@@ -18,7 +16,6 @@ export default defineConfig({
             clientPort: hmrRemotePort,
         },
     },
-
     plugins: [
         laravel.default({
             input: ["resources/css/app.css", "resources/js/app.js"],
