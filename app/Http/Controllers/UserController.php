@@ -12,6 +12,7 @@ use Carbon\CarbonInterface;
 use App\Models\Client;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -104,8 +105,8 @@ class UserController extends Controller
         // Get total hours for each working week, for the last 24 weeks
         $last24Weeks = Log::where('user_id', $user->id)
             ->whereBetween('date', [Carbon::now()->endOfWeek()->subWeeks(24), Carbon::now()->endOfWeek()])
-            ->selectRaw('sum(hours) as hours, sum(distance) as distance, sum(travel_time) as travel_time, week(date) as week, MIN(date) as start_date')
-            ->groupBy('week')
+            ->selectRaw('sum(hours) as hours, sum(distance) as distance, sum(travel_time) as travel_time, EXTRACT(WEEK FROM date) as week, MIN(date) as start_date')
+            ->groupBy(DB::raw('EXTRACT(WEEK FROM date)'))
             ->get()
             ->map(function ($item) use ($rate, $mileageRate, $travelRate) {
                 $item->total = (($item->hours * $rate) + ($item->distance * $mileageRate) + ($item->travel_time * $travelRate)) / $rate;

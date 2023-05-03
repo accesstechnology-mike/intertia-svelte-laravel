@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Inertia } from "@inertiajs/inertia";
     import { statusMapping } from "../statusMapping"; // Import the shared mapping
     import { sortAndGroupClients } from "../utils.js";
+    import axios from "axios";
 
     import { modalStore } from "@skeletonlabs/skeleton";
     import ClientStatusModal from "../Components/Dashboard/ClientStatusModal.svelte";
@@ -20,7 +20,7 @@
     async function updateClientStatus(client, event) {
         const newStatus = event.target.value;
         try {
-            await Inertia.patch(`/api/clients/${client.id}`, {
+            await axios.patch(`/api/clients/${client.id}`, {
                 client_status: newStatus,
             });
             client.client_status = newStatus;
@@ -31,7 +31,6 @@
             console.error(error);
         }
     }
-
     function openModal(clientToEdit) {
         const modalComponent = {
             ref: ClientStatusModal,
