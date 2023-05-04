@@ -28,6 +28,6 @@ class ClientController extends Controller
         $client->client_status = $request->client_status;
         $client->save();
 
-        return Inertia::render('Dashboard');
+        return response()->json(['message' => 'Client status updated']);
     }
 }

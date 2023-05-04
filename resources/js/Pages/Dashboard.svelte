@@ -31,7 +31,6 @@
             console.error(error);
         }
     }
-
     function openModal(clientToEdit) {
         const modalComponent = {
             ref: ClientStatusModal,
