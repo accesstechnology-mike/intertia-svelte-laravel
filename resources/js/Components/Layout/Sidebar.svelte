@@ -44,10 +44,10 @@
             <span>Handbook</span>
             <Fa icon={faUpRightFromSquare} size="xs" class="mt-0.5" />
         </a>
-
+        <!-- 
         <a href="/leave-requests">Leave Requests</a>
         <a href="/leave-types">Leave Types</a>
-        <a href="/holidays">Holidays</a>
+        <a href="/holidays">Holidays</a> -->
 
         {#if role === "Super Admin"}
             <hr />
