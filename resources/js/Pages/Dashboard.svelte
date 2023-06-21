@@ -1,46 +1,77 @@
-<script>
-    import { onMount } from 'svelte';
-    import axios from 'axios';
+<script lang="ts">
+    import { onMount } from "svelte";
+    import { statusMapping } from "../statusMapping"; // Import the shared mapping
+    import { sortAndGroupClients } from "../utils.js";
+    import axios from "axios";
 
-    let clients = [];
-  
-    onMount(async () => {
+    import { modalStore } from "@skeletonlabs/skeleton";
+    import ClientStatusModal from "../Components/Dashboard/ClientStatusModal.svelte";
 
-    try {
-        const response = await axios.get('/api/clients');
-        clients = response.data;
-      } catch (error) {
-        console.error(error);
-      }
+    export let clients = [];
+
+    let isLoading = true;
+    let groupedClients = {};
+
+    onMount(() => {
+        groupedClients = sortAndGroupClients(clients);
+        isLoading = false;
     });
 
     async function updateClientStatus(client, event) {
-    const newStatus = event.target.value;
-    try {
-      await axios.patch(`/api/clients/${client.id}`, { client_status: newStatus });
-      client.client_status = newStatus;
-    } catch (error) {
-      console.error(error);
+        const newStatus = event.target.value;
+        try {
+            await axios.patch(`/api/clients/${client.id}`, {
+                client_status: newStatus,
+            });
+            client.client_status = newStatus;
+            groupedClients = sortAndGroupClients(
+                Object.values(groupedClients).flat()
+            );
+        } catch (error) {
+            console.error(error);
+        }
     }
-  }
+    function openModal(clientToEdit) {
+        const modalComponent = {
+            ref: ClientStatusModal,
+            props: {
+                client: clientToEdit,
+                onUpdateClientStatus: updateClientStatus,
+            },
+        };
+
+        modalStore.trigger({
+            type: "component",
+            component: modalComponent,
+            title: "Update Client Status",
+            body: "Select a new status for the client:",
+        });
+    }
 </script>
 
-<div>
-    {#each clients as client}
-      <div class="client-card">
-        <h3>{client.name}</h3>
-        <select value={client.client_status} on:change={(event) => updateClientStatus(client, event)}>
-            <option value="newClient">New Client</option>
-            <option value="assessmentScheduled">Assessment Scheduled</option>
-            <option value="initialAssessment">Initial Assessment</option>
-            <option value="awaiting">Awaiting approval</option>
-            <option value="setup">Setup following initial recommendations</option>
-            <option value="ongoing">Ongoing intervention</option>
-            <option value="review">4 monthly observation and review only</option>
-            <option value="yearly">Yearly observation and review only</option>
-        </select>
-      </div>
-      <hr>
-    {/each}
-</div>
-    
+{#if isLoading}
+    <p>Loading...</p>
+{:else}
+    <div class="">
+        {#each Object.keys(groupedClients) as status}
+            {#if groupedClients[status].length > 0}
+                <h3 class="pt-3 pb-2">{statusMapping[status]}</h3>
+                <hr class="pb-4" />
+                <!-- insert tailwind grid -->
+                <div class="grid grid-cols-1 gap-4">
+                    {#each groupedClients[status] as client}
+                        <div class="card p-3 card-hover">
+                            <h3>{client.name}</h3>
+                            <button
+                                class="btn"
+                                on:click={() => openModal(client)}
+                            >
+                                Change Status
+                            </button>
+                        </div>
+                    {/each}
+                </div>
+            {/if}
+        {/each}
+    </div>
+{/if}

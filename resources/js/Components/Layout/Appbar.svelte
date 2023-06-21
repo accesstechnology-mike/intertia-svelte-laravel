@@ -1,21 +1,23 @@
-<script>
+<script lang="ts">
+    import { AppBar } from "@skeletonlabs/skeleton";
+    import { LightSwitch } from "@skeletonlabs/skeleton";
 
-    import { AppBar } from '@skeletonlabs/skeleton';
-    import { LightSwitch } from '@skeletonlabs/skeleton';
+    import { drawerStore } from "@skeletonlabs/skeleton";
 
-    import { drawerStore } from '@skeletonlabs/skeleton';
+    import Fa from "svelte-fa";
+    import { faUser } from "@fortawesome/free-regular-svg-icons";
+    import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-    import Fa from 'svelte-fa'
-    import { faUser } from '@fortawesome/free-regular-svg-icons'
-    import { faXmark } from '@fortawesome/free-solid-svg-icons'
+    let src = "/android-chrome-192x192.png";
 
-    let src = './android-chrome-192x192.png'
+    export let currentPage;
 
     function drawerOpen() {
-    drawerStore.open({});
-}
+        drawerStore.open({});
+    }
 
-
+    $: classesActive = (href: string) =>
+        href === currentPage ? "limegreen" : "";
 </script>
 
 <AppBar>
@@ -34,19 +36,19 @@
                 <button class="btn-icon-sm relative top-1 mr-2">
                     <img {src} alt="" />
                 </button>
-                <strong class="text-xl uppercase relative bottom-1.5 hidden md:inline">access: log</strong>
+                <strong class="text-3xl relative bottom-1 hidden md:inline"
+                    >access: log</strong
+                >
             </a>
         </div>
     </svelte:fragment>
-	<svelte:fragment slot="trail">
-
-        <a class="btn-icon variant-soft" href="/profile">
-            <Fa icon={faUser} />
+    <svelte:fragment slot="trail">
+        <a class="btn-icon variant-soft " href="/profile">
+            <Fa icon={faUser} color={classesActive("/profile")} />
         </a>
         <a class="btn-icon variant-soft" href="/logout">
             <Fa icon={faXmark} />
         </a>
-        <LightSwitch/>
+        <LightSwitch />
     </svelte:fragment>
 </AppBar>
-

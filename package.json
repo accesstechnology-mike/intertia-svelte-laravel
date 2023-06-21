@@ -6,23 +6,25 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "@skeletonlabs/skeleton": "^1.0.0",
+    "@skeletonlabs/skeleton": "^1.2.5",
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
     "autoprefixer": "^10.4.7",
-    "axios": "^1.1.2",
     "laravel-vite-plugin": "^0.7.2",
     "lodash": "^4.17.19",
     "postcss": "^8.4.14",
     "postcss-load-config": "^4.0.1",
     "svelte-preprocess": "^4.10.7",
-    "tailwindcss": "^3.2.7",
+    "tailwindcss": "^3.3.1",
     "vite": "^4.0.0"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.3.0",
     "@fortawesome/free-regular-svg-icons": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@inertiajs/inertia": "^0.11.1",
+    "@inertiajs/inertia-svelte": "^0.8.0",
     "@inertiajs/svelte": "^1.0.2",
+    "@tailwindcss/forms": "^0.5.3",
     "chart.js": "^4.2.1",
     "svelte": "^3.56.0",
     "svelte-chartjs": "^3.1.2",

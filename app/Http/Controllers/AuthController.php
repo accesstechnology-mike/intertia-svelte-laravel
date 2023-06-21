@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         return Inertia::render('Welcome');
     }
-    
+
     public function login()
     {
         return Socialite::driver('google')->with(['hd' => 'accesstechnology.co.uk'])->redirect();
@@ -58,4 +58,3 @@ class AuthController extends Controller
         return redirect('/');
     }
 }
-

@@ -8,12 +8,17 @@ use App\Models\Client;
 class DashboardController extends Controller
 {
     //dashboard route
+
     public function dashboard()
     {
-        //get clients from database where user_id = current user and client_status is not "inactive"
-        $clients = Client::where('user_id', auth()->user()->id)->where('client_status', '!=', 'inactive')->get();
 
-        //return dashboard view with clients
+        // Get clients from database where user_id = current user and client_status is not "inactive"
+        $clients = Client::where('user_id', auth()->user()->id)
+            ->where('client_status', '!=', 'inactive')
+            // ->orderByRaw($customOrder)
+            ->get();
+
+        // Return dashboard view with clients
         return inertia('Dashboard', [
             'clients' => $clients,
         ]);
